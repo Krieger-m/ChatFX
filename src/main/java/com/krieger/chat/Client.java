@@ -10,7 +10,7 @@ public class Client {
 
     public static Socket establishConnection(String host, int port) throws IOException {
         Socket socket = new Socket(host, port);
-        System.out.println("\nVerbunden mit A1_Server: " + host + ":" + port);
+        System.out.println("\nVerbunden mit ChatFX_Server: " + host + ":" + port);
         return socket;
     }
 
@@ -48,7 +48,7 @@ public class Client {
     public static void printServerResponse(BufferedReader in) throws IOException {
         String response;
         while ((response = in.readLine()) != null && !response.equals("END")) {
-            System.out.println("A1_Server: " + response);
+            System.out.println("ChatFX_Server: " + response);
             if ("Verbindung wird beendet.".equals(response)) {
                 break;
             }

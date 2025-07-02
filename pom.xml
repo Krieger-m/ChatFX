@@ -14,22 +14,24 @@
 <junit.version>5.10.2</junit.version>  </properties>
 
   <dependencies>
+
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
       <version>17.0.6</version>
     </dependency>
+
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
       <version>17.0.6</version>
     </dependency>
-<dependency>
+    <dependency>
       <groupId>org.kordamp.bootstrapfx</groupId>
       <artifactId>bootstrapfx-core</artifactId>
       <version>0.4.0</version>
     </dependency>
-<dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>${junit.version}</version>
@@ -40,7 +42,21 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
-    </dependency>  </dependencies>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.genai</groupId>
+      <artifactId>google-genai</artifactId>
+      <version>1.7.0</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-vertexai</artifactId>
+      <version>0.3.0</version>
+    </dependency>
+  </dependencies>
 
   <build>
     <plugins>

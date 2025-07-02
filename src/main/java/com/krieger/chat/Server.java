@@ -21,7 +21,7 @@ public class Server {
     }
 
     private static void handleClient(Socket clientSocket) {
-        String logPath = "chat/src/main/resources/server_log.txt";
+        String logPath = "src/main/resources/com/krieger/chat/server_log.txt";
         try (
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);

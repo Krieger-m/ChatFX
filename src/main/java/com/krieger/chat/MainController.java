@@ -73,7 +73,7 @@ public class MainController {
 
     public void initializeConnection() {
 
-        new Thread(() -> Server.startServer()).start();
+        new Thread(Server::startServer).start();
         try {
             Thread.sleep(500);
             socket = Client.establishConnection("localhost", 4999);
