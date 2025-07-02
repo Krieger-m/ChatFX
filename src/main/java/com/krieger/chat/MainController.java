@@ -9,6 +9,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 public class MainController {
 
     @FXML
@@ -18,7 +24,7 @@ public class MainController {
     private HBox input_container;
 
     @FXML
-    private ListView<?> list_view;
+    private ListView<String> list_view;
 
     @FXML
     private Label notification_lbl;
@@ -32,15 +38,56 @@ public class MainController {
     @FXML
     private VBox v_container;
 
+    private Socket server;
+    private Socket socket;
+    private PrintWriter out;
+    private BufferedReader in;
+
     @FXML
     void sendBtnClicked(ActionEvent event) {
 
+        String command = txt_input.getText();
+        if (command == null || command.isEmpty()) return;
+        out.println(command);
+        list_view.getItems().add("You: \t"+command);
+        try {
+            String line;
+            while ((line = in.readLine()) != null && !line.equals("END")) {
+
+                list_view.getItems().add(line);
+                if ("Verbindung wird beendet.".equals(line)) break;
+            }
+            if ("exit".equalsIgnoreCase(command)) {
+                socket.close();
+            }
+        } catch (IOException e) {
+            notification_lbl.setText("Fehler: " + e.getMessage());
+        }
+        txt_input.clear();
+    }
+
+
+
+    public void initializeConnection() {
+
+        new Thread(() -> Server.startServer()).start();
+        try {
+            Thread.sleep(500);
+            socket = Client.establishConnection("localhost", 4999);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+        } catch (IOException | InterruptedException e) {
+            notification_lbl.setText("Verbindung fehlgeschlagen: " + e.getMessage());
+        }
     }
 
 
     @FXML
     void initialize() {
+        list_view.setPlaceholder(new Label("nothing to show...\nstart a new chat"));
         tests();
+        initializeConnection();
 
     }
 

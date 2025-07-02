@@ -27,7 +27,7 @@
          </ListView>
          <HBox fx:id="input_container" VBox.vgrow="SOMETIMES">
             <children>
-               <TextField fx:id="txt_input" style="-fx-background-color: #d1d8e0;" HBox.hgrow="ALWAYS">
+               <TextField fx:id="txt_input" promptText="  type here to chat ..." style="-fx-background-color: #d1d8e0;" HBox.hgrow="ALWAYS">
                   <effect>
                      <DropShadow height="15.0" offsetX="3.0" offsetY="3.0" radius="7.0" width="15.0">
                         <color>
