@@ -43,15 +43,17 @@ public class MainController {
     private PrintWriter out;
     private BufferedReader in;
 
+    private String response = null;
+
     @FXML
     void sendBtnClicked(ActionEvent event) {
 
         String command = txt_input.getText();
         if (command == null || command.isEmpty()) return;
         out.println(command);
-        list_view.getItems().add("You: \t"+command);
-        list_view.getItems().add("\n");
-
+        list_view.getItems().add("\n\tYou: \n\n"+command+"\n");
+        response = GeminiTest.generateAiResponse(command);
+        list_view.getItems().add("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tResponse: \n\n"+response+"\n");
         try {
             String line;
             while ((line = in.readLine()) != null && !line.equals("END")) {
@@ -91,6 +93,9 @@ public class MainController {
         list_view.setPlaceholder(new Label("nothing to show...\nstart a new chat"));
         tests();
         initializeConnection();
+
+        txt_input.setOnAction(event -> sendBtnClicked(null));
+
 
     }
 

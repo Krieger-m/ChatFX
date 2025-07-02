@@ -7,7 +7,26 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
+import com.google.genai.Client;
+import com.google.genai.types.GenerateContentResponse;
+
 public class Server {
+
+    static String modelId = "gemini-2.0-flash-001";
+    static GenerateContentResponse response;
+
+    public static String generateAiResponse(String query){
+        try (Client c = new Client()) {
+            response = c.models.generateContent(modelId,query, null);
+
+            System.out.println(response.text());
+            return response.text();
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
 
     public static void startServer() {
         try (ServerSocket serverSocket = new ServerSocket(4999)) {
@@ -51,22 +70,22 @@ public class Server {
     private static void processCommand(String command, PrintWriter out) throws IOException {
         System.out.println();
         switch (command.toLowerCase()) {
-            case "time":
+            case "srvr-time":
                 out.println("Serverzeit: \t" + LocalDateTime.now());
                 System.out.println("-> sending time info to client.");
                 break;
-            case "dir":
+            case "srvr-dir":
                 out.println("Arbeitsverzeichnis: \t" + System.getProperty("user.dir"));
                 System.out.println("-> sending directory info to client.");
                 break;
-            case "list":
+            case "srvr-list":
                 Files.list(Paths.get(System.getProperty("user.dir")))
                         .forEach(path -> out.println(path.getFileName()));
                 System.out.println("-> sending file list to client.");
                 break;
             default:
-                out.println("Unbekannter Befehl: " + command);
-                System.err.println("Unknown command received: " + command);
+                //out.println("Unbekannter Befehl: " + command);
+                System.err.println("Chat message received: " + command);
                 break;
         }
         out.println("END");
