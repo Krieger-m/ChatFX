@@ -50,11 +50,14 @@ public class MainController {
         if (command == null || command.isEmpty()) return;
         out.println(command);
         list_view.getItems().add("You: \t"+command);
+        list_view.getItems().add("\n");
+
         try {
             String line;
             while ((line = in.readLine()) != null && !line.equals("END")) {
 
                 list_view.getItems().add(line);
+                list_view.getItems().add("\n");
                 if ("Verbindung wird beendet.".equals(line)) break;
             }
             if ("exit".equalsIgnoreCase(command)) {
