@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-<HBox fx:id="h_container" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.krieger.chat.HelloController">
+<HBox fx:id="h_container" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.krieger.chat.MainController">
    <children>
-      <VBox fx:id="v_container" alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="7.0" style="-fx-background-color: #4b6584;" HBox.hgrow="ALWAYS">
+      <VBox fx:id="v_container" alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="7.0" style="-fx-background-color: #57606f;" HBox.hgrow="ALWAYS">
         <padding>
           <Insets bottom="10.0" left="15.0" right="15.0" top="15.0" />
         </padding>
@@ -36,7 +36,7 @@
                      </DropShadow>
                   </effect>
                </TextField>
-              <Button fx:id="send_btn" onAction="#onHelloButtonClick" text="Send" HBox.hgrow="NEVER">
+              <Button fx:id="send_btn" onAction="#sendBtnClicked" text="Send" HBox.hgrow="NEVER">
                   <effect>
                      <DropShadow height="15.0" offsetX="3.0" offsetY="3.0" radius="7.0" width="15.0">
                         <color>

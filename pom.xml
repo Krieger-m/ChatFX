@@ -62,7 +62,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>com.krieger.chat/com.krieger.chat.HelloApplication</mainClass>
+              <mainClass>com.krieger.chat/com.krieger.chat.Main</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>
