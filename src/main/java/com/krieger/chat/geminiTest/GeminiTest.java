@@ -1,4 +1,4 @@
-package com.krieger.chat;
+package com.krieger.chat.geminiTest;
 
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;

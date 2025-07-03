@@ -17,7 +17,7 @@ public class Server {
 
     public static String generateAiResponse(String query){
             // API KEY NEEDS TO BE DELETED BEFORE UPLOADING
-        try (Client c = Client.builder().apiKey("-BYCnHM").build();) {
+        try (Client c = new Client()) {
             // hier
             response = c.models.generateContent(modelId,query, null);
 
@@ -39,6 +39,17 @@ public class Server {
         } catch (IOException e) {
             System.err.println("Serverfehler: " + e.getMessage());
         }
+    }
+
+    public static String wrapText(String text, int maxLineLength) {
+        StringBuilder sb = new StringBuilder();
+        int index = 0;
+        while (index < text.length()) {
+            sb.append(text, index, Math.min(index + maxLineLength, text.length()));
+            sb.append(System.lineSeparator());
+            index += maxLineLength;
+        }
+        return sb.toString();
     }
 
     private static void handleClient(Socket clientSocket) {
@@ -87,7 +98,7 @@ public class Server {
                 break;
             default:
                 //out.println("Unbekannter Befehl: " + command);
-                System.err.println("Chat message received: " + command);
+                System.out.println("Chat message received: " + command);
                 break;
         }
         out.println("END");
