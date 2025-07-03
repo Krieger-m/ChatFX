@@ -5,4 +5,6 @@ module com.krieger.chat {
 
     opens com.krieger.chat to javafx.fxml;
     exports com.krieger.chat;
+    exports com.krieger.chat.geminiTest;
+    opens com.krieger.chat.geminiTest to javafx.fxml;
 }

@@ -1,4 +1,4 @@
-package com.krieger.chat;
+package com.krieger.chat.geminiTest;
 
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
@@ -31,8 +31,13 @@ public class GeminiTest {
     static GenerateContentResponse response;
 
     public static String generateAiResponse(String query){
-        try (Client c = new Client()) {
-        response = c.models.generateContent(modelId,query, null);
+        //NOTE API KEY NEEDS TO BE DELETED BEFORE UPLOADING
+        // not here to lecture you about sharing of sensible data or credentials but this can get expensive :D
+        try (Client c = Client.builder().apiKey("YOUR API KEY HERE").build();) {
+            // hier muss der eigene API key eingesetzt werden ^
+
+
+            response = c.models.generateContent(modelId,query, null);
 
             //System.out.println(response.text());
             return response.text();
