@@ -52,7 +52,7 @@ public class MainController {
         if (command == null || command.isEmpty()) return;
         out.println(command);
         list_view.getItems().add("\n\tYou: \n\n"+command+"\n");
-        response = GeminiTest.generateAiResponse(command);
+        response = Server.generateAiResponse(command);
         list_view.getItems().add("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tResponse: \n\n"+response+"\n");
         try {
             String line;

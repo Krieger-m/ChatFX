@@ -16,7 +16,9 @@ public class Server {
     static GenerateContentResponse response;
 
     public static String generateAiResponse(String query){
-        try (Client c = new Client()) {
+            // API KEY NEEDS TO BE DELETED BEFORE UPLOADING
+        try (Client c = Client.builder().apiKey("AIzaSyDZn0ZXeFOVhL9K8iLtgbbXNfVx-BYCnHM").build();) {
+            // hier
             response = c.models.generateContent(modelId,query, null);
 
             System.out.println(response.text());
