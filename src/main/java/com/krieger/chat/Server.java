@@ -17,7 +17,7 @@ public class Server {
 
     public static String generateAiResponse(String query){
             //NOTE API KEY NEEDS TO BE DELETED BEFORE UPLOADING
-        try (Client c = Client.builder().apiKey("AIzaSyDZn0ZXeFOVhL9K8iLtgbbXNfVx-BYCnHM").build();) {
+        try (Client c = Client.builder().apiKey("xxxx-BYCnHM").build();) {
             // hier kann der eigene API key eingesetzt werden
             response = c.models.generateContent(modelId,query, null);
 
