@@ -17,8 +17,11 @@ public class Server {
 
     public static String generateAiResponse(String query){
             //NOTE API KEY NEEDS TO BE DELETED BEFORE UPLOADING
-        try (Client c = Client.builder().apiKey("AIzaSyDZn0ZXeFOVhL9K8iLtgbbXNfVx-BYCnHM").build();) {
-            // hier kann der eigene API key eingesetzt werden
+            // not here to lecture you about sharing of sensible data or credentials but this can get expensive :D
+        try (Client c = Client.builder().apiKey("YOUR API KEY HERE").build();) {
+            // hier muss der eigene API key eingesetzt werden ^
+
+
             response = c.models.generateContent(modelId,query, null);
 
             System.out.println(response.text());
