@@ -1,3 +1,8 @@
 2025-07-02T20:39:40.375950400 - time
 2025-07-03T00:17:35.730306500 - hello how are you doing?
 2025-07-03T00:18:35.955518200 - i cant believe i did it :)
+2025-07-05T15:28:08.038760300 - hello
+2025-07-05T15:29:09.724233700 - please help me how to wrap the text inside a javafx listview element. I am using it for our chat right now but the text is not wrapping instead the lines go on forever :D
+2025-07-05T16:45:41.777596100 - hi chat!
+2025-07-05T16:45:55.693353 - please tell me a nice story :)
+2025-07-05T16:46:41.440158300 - that was great. where did you get it from?

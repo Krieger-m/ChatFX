@@ -1,25 +1,8 @@
 2025-07-02T20:39:40.375950400 - time
 2025-07-03T00:17:35.730306500 - hello how are you doing?
 2025-07-03T00:18:35.955518200 - i cant believe i did it :)
-2025-07-03T00:20:10.826429200 - hy did it work?
-2025-07-03T00:38:39.317990500 - hello are you alive?
-2025-07-03T00:45:55.164229600 - hello gemini
-2025-07-03T00:46:16.820159500 - please calculate 42+5
-2025-07-03T00:50:07.612779900 - hi please tell me how to put only the response item in a javafx listview to the right side
-2025-07-03T00:51:55.777344300 - hi my friend are you ready for presentation tomorrowß
-2025-07-03T00:52:45.324686900 - are you ready for presentation tomorrow?
-2025-07-03T00:53:42.572087100 - hello how is the weather at your home?
-2025-07-03T00:54:55.273425600 - this is a test
-2025-07-03T00:55:41.711264100 - this is a test
-2025-07-03T00:56:11.502203 - this is a test
-2025-07-03T00:56:41.936702700 - test message
-2025-07-03T00:57:26.797362800 - testing :)
-2025-07-03T00:58:12.687630600 - testing
-2025-07-03T00:58:48.183880800 - hello
-2025-07-03T00:59:16.502304100 - tell me a story
-2025-07-03T08:02:40.712247 - test
-2025-07-03T08:09:38.430834600 - hello
-2025-07-03T08:09:53.338935100 - please tell me a nice story
-2025-07-03T08:29:31.826190700 - anja ist dumm
-2025-07-03T13:21:31.649603700 - hi are you alive?
-2025-07-03T13:22:32.720535200 - please tell me a nice story :)
+2025-07-05T15:28:08.038760300 - hello
+2025-07-05T15:29:09.724233700 - please help me how to wrap the text inside a javafx listview element. I am using it for our chat right now but the text is not wrapping instead the lines go on forever :D
+2025-07-05T16:45:41.777596100 - hi chat!
+2025-07-05T16:45:55.693353 - please tell me a nice story :)
+2025-07-05T16:46:41.440158300 - that was great. where did you get it from?

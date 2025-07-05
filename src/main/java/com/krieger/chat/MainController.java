@@ -1,19 +1,20 @@
 package com.krieger.chat;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class MainController {
 
@@ -51,9 +52,10 @@ public class MainController {
         String command = txt_input.getText();
         if (command == null || command.isEmpty()) return;
         out.println(command);
-        list_view.getItems().add("\n\tYou: \n\n"+command+"\n");
+        list_view.getItems().add("\n\tYou: \n"+command+"\n");
         response = Server.generateAiResponse(command);
-        list_view.getItems().add("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tResponse: \n\n"+response+"\n");
+        
+        list_view.getItems().add("\n\tResponse: \n"+response+"\n");
         try {
             String line;
             while ((line = in.readLine()) != null && !line.equals("END")) {
@@ -91,6 +93,33 @@ public class MainController {
     @FXML
     void initialize() {
         list_view.setPlaceholder(new Label("nothing to show...\nstart a new chat"));
+
+
+        list_view.setCellFactory((listView) -> new ListCell<String>() {
+
+            private final Label label = new Label();
+            {
+                label.setWrapText(true);
+                label.setStyle("-fx-padding: 8; -fx-font-size: 14px;");
+
+                setPrefWidth(0);
+            }
+
+            @Override 
+            protected void updateItem(String item, boolean empty){
+                super.updateItem(item, empty);
+                if(empty || item == null){
+                    setGraphic(null);
+                } else {
+                    label.setText(item);
+                    label.setMaxWidth(list_view.getWidth()-32);
+                    setGraphic(label);
+                }
+            }
+            
+        });
+        
+        
         tests();
         initializeConnection();
 
