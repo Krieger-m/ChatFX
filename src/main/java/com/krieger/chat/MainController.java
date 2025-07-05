@@ -25,7 +25,7 @@ public class MainController {
     private HBox input_container;
 
     @FXML
-    private ListView<String> list_view;
+    private ListView<Message> list_view;
 
     @FXML
     private Label notification_lbl;
@@ -39,96 +39,96 @@ public class MainController {
     @FXML
     private VBox v_container;
 
-    private Socket server;
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
 
-    private String response = null;
-
     @FXML
     void sendBtnClicked(ActionEvent event) {
-
-        String command = txt_input.getText();
-        if (command == null || command.isEmpty()) return;
-        out.println(command);
-        list_view.getItems().add("\n\tYou: \n"+command+"\n");
-        response = Server.generateAiResponse(command);
-        
-        list_view.getItems().add("\n\tResponse: \n"+response+"\n");
-        try {
-            String line;
-            while ((line = in.readLine()) != null && !line.equals("END")) {
-
-                list_view.getItems().add(line);
-                list_view.getItems().add("\n");
-                if ("Verbindung wird beendet.".equals(line)) break;
-            }
-            if ("exit".equalsIgnoreCase(command)) {
-                socket.close();
-            }
-        } catch (IOException e) {
-            notification_lbl.setText("Fehler: " + e.getMessage());
-        }
+        String userText = txt_input.getText();
+        if (userText == null || userText.isEmpty()) return;
+        out.println(userText);
+        list_view.getItems().add(new Message(userText, Message.Type.USER));
         txt_input.clear();
+
+        // Read server response in a background thread
+        new Thread(() -> {
+            try {
+                String line;
+                while ((line = in.readLine()) != null) {
+                    final String responseLine = line;
+                    // Only add non-empty lines
+                     if (!responseLine.trim().isEmpty()) { 
+                        javafx.application.Platform.runLater(() -> {
+                            list_view.getItems().add(new Message(responseLine, Message.Type.RESPONSE));
+                        });
+                    }
+                    // Stop reading after "END" or connection close message
+                    if ("END".equals(responseLine) || "Verbindung wird beendet.".equals(responseLine)) {
+                        break;
+                    }
+                }
+                if ("exit".equalsIgnoreCase(userText)) {
+                    socket.close();
+                }
+            } catch (IOException e) {
+                javafx.application.Platform.runLater(() ->
+                    notification_lbl.setText("Fehler: " + e.getMessage())
+                );
+            }
+        }).start();
     }
 
-
-
     public void initializeConnection() {
-
         new Thread(Server::startServer).start();
         try {
             Thread.sleep(500);
             socket = Client.establishConnection("localhost", 4999);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
         } catch (IOException | InterruptedException e) {
             notification_lbl.setText("Verbindung fehlgeschlagen: " + e.getMessage());
         }
     }
 
-
     @FXML
     void initialize() {
         list_view.setPlaceholder(new Label("nothing to show...\nstart a new chat"));
-
-
-        list_view.setCellFactory((listView) -> new ListCell<String>() {
-
+        list_view.setCellFactory(listView -> new ListCell<Message>() {
             private final Label label = new Label();
+            private final HBox hbox = new HBox(label);
             {
                 label.setWrapText(true);
                 label.setStyle("-fx-padding: 8; -fx-font-size: 14px;");
-
                 setPrefWidth(0);
+                hbox.setFillHeight(true);
+                hbox.setPrefWidth(0);
             }
-
-            @Override 
-            protected void updateItem(String item, boolean empty){
+            @Override
+            protected void updateItem(Message item, boolean empty) {
                 super.updateItem(item, empty);
-                if(empty || item == null){
+                if (empty || item == null) {
                     setGraphic(null);
                 } else {
-                    label.setText(item);
-                    label.setMaxWidth(list_view.getWidth()-32);
-                    setGraphic(label);
+                    label.setText(item.getText());
+                    label.setMaxWidth(list_view.getWidth() - 32);
+                    if (item.getType() == Message.Type.RESPONSE) {
+                        hbox.setStyle("-fx-alignment: CENTER-Left;");
+                        label.setStyle("-fx-padding: 8; -fx-font-size: 14px; -fx-background-color: #dff9fb; -fx-background-radius: 8;");
+                    } else {
+                        hbox.setStyle("-fx-alignment: CENTER-Right;");
+                        label.setStyle("-fx-padding: 8; -fx-font-size: 14px; -fx-background-color: #f6e58d; -fx-background-radius: 8;");
+                    }
+                    setGraphic(hbox);
                 }
             }
-            
         });
-        
-        
         tests();
         initializeConnection();
-
         txt_input.setOnAction(event -> sendBtnClicked(null));
-
-
     }
 
-    public void tests(){
+    public void tests() {
         assert h_container != null : "fx:id=\"h_container\" was not injected: check your FXML file 'main-view.fxml'.";
         assert input_container != null : "fx:id=\"input_container\" was not injected: check your FXML file 'main-view.fxml'.";
         assert list_view != null : "fx:id=\"list_view\" was not injected: check your FXML file 'main-view.fxml'.";
@@ -137,7 +137,4 @@ public class MainController {
         assert txt_input != null : "fx:id=\"txt_input\" was not injected: check your FXML file 'main-view.fxml'.";
         assert v_container != null : "fx:id=\"v_container\" was not injected: check your FXML file 'main-view.fxml'.";
     }
-
-
-
 }

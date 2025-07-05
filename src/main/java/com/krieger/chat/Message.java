@@ -11,8 +11,13 @@ public class Message {
         this.type = type;
     }
 
-    public String getText(){return text;}
-    public Type getType(){return type;}
+    public String getText() {
+        return text;
+    }
+
+    public Type getType() {
+        return type;
+    }
 
 
 }

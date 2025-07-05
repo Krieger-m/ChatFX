@@ -11,30 +11,29 @@ import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
 
 public class Server {
+    static final String MODEL_ID = "gemini-2.0-flash-001";
 
-    static String modelId = "gemini-2.0-flash-001";
-    static GenerateContentResponse response;
-
-    public static String generateAiResponse(String query){
-            // API KEY NEEDS TO BE DELETED BEFORE UPLOADING
+    public static String generateAiResponse(String query) {
         try (Client c = new Client()) {
-            // hier
-            response = c.models.generateContent(modelId,query, null);
-
-            System.out.println(response.text());
-            return response.text();
-        } catch (Exception e){
-            System.out.println(e.getMessage());
+            GenerateContentResponse response = c.models.generateContent(MODEL_ID, query, null);
+            String text = response.text();
+            System.out.println("AI response: " + text);
+            return text;
+        } catch (Exception e) {
+            System.out.println("AI error: " + e.getMessage());
             return null;
         }
     }
 
-
     public static void startServer() {
         try (ServerSocket serverSocket = new ServerSocket(4999)) {
             System.out.println("\nChat_Server gestartet. Warte auf Verbindung...");
-            try (Socket clientSocket = serverSocket.accept()) {
-                handleClient(clientSocket);
+            while (true) {
+                try (Socket clientSocket = serverSocket.accept()) {
+                    handleClient(clientSocket);
+                } catch (IOException e) {
+                    System.err.println("Fehler bei der Client-Kommunikation: " + e.getMessage());
+                }
             }
         } catch (IOException e) {
             System.err.println("Serverfehler: " + e.getMessage());
@@ -54,10 +53,12 @@ public class Server {
 
     private static void handleClient(Socket clientSocket) {
         String logPath = "src/main/resources/com/krieger/chat/server_log.txt";
+        File logFile = new File(logPath);
+        logFile.getParentFile().mkdirs(); // Ensure directory exists
         try (
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                PrintWriter logWriter = new PrintWriter(new FileWriter(logPath, true))
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            PrintWriter logWriter = new PrintWriter(new FileWriter(logFile, true))
         ) {
             System.out.println("Chat_Client verbunden: " + clientSocket.getInetAddress().getHostAddress());
             String command;
@@ -71,7 +72,7 @@ public class Server {
                 processCommand(command, out);
             }
         } catch (IOException e) {
-            System.err.println("Fehler bei der A1_Client-Kommunikation: " + e.getMessage());
+            System.err.println("Fehler bei der Client-Kommunikation: " + e.getMessage());
         }
     }
 
@@ -93,14 +94,23 @@ public class Server {
                 break;
             case "srvr-list":
                 Files.list(Paths.get(System.getProperty("user.dir")))
-                        .forEach(path -> out.println(path.getFileName()));
+                    .forEach(path -> out.println(path.getFileName()));
                 System.out.println("-> sending file list to client.");
                 break;
             default:
-                //out.println("Unbekannter Befehl: " + command);
                 System.out.println("Chat message received: " + command);
+                String aiResponse = generateAiResponse(command);
+                if (aiResponse == null || aiResponse.isEmpty()) {
+                    out.println("Keine Antwort vom Server.");
+                } else {
+                    out.println(aiResponse);
+                }
                 break;
         }
-        out.println("END");
+       
+    }
+
+    public static void main(String[] args) {
+        startServer();
     }
 }
